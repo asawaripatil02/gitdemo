@@ -1,0 +1,3 @@
+git commands 
+git --version
+git init
