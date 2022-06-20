@@ -1,0 +1,384 @@
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 18
+Server version: 8.0.26 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create table a1(id int auto_increment primary key, ename varchar(10), sal int, comm int, total int default(sal+comm));
+Query OK, 0 rows affected (0.56 sec)
+
+mysql> insert into a1 values(default,'saleel',4000, 75, default), (default,'sharmin', 5000, 1000, 10000),(default,'bandish', 7000, 400, default);
+Query OK, 3 rows affected (0.12 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from a1;
++----+---------+------+------+-------+
+| id | ename   | sal  | comm | total |
++----+---------+------+------+-------+
+|  1 | saleel  | 4000 |   75 |  4075 |
+|  2 | sharmin | 5000 | 1000 | 10000 |
+|  3 | bandish | 7000 |  400 |  7400 |
++----+---------+------+------+-------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql> create table a2(id int auto_increment primary key, ename varchar(10), sal int, comm int, total int generated always as (sal+comm) virtual);
+Query OK, 0 rows affected (0.38 sec)
+
+mysql> desc a1;
++-------+-------------+------+-----+------------------+-------------------+
+| Field | Type        | Null | Key | Default          | Extra             |
++-------+-------------+------+-----+------------------+-------------------+
+| id    | int         | NO   | PRI | NULL             | auto_increment    |
+| ename | varchar(10) | YES  |     | NULL             |                   |
+| sal   | int         | YES  |     | NULL             |                   |
+| comm  | int         | YES  |     | NULL             |                   |
+| total | int         | YES  |     | (`sal` + `comm`) | DEFAULT_GENERATED |
++-------+-------------+------+-----+------------------+-------------------+
+5 rows in set (0.01 sec)
+
+mysql> desc a2;
++-------+-------------+------+-----+---------+-------------------+
+| Field | Type        | Null | Key | Default | Extra             |
++-------+-------------+------+-----+---------+-------------------+
+| id    | int         | NO   | PRI | NULL    | auto_increment    |
+| ename | varchar(10) | YES  |     | NULL    |                   |
+| sal   | int         | YES  |     | NULL    |                   |
+| comm  | int         | YES  |     | NULL    |                   |
+| total | int         | YES  |     | NULL    | VIRTUAL GENERATED |
++-------+-------------+------+-----+---------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from c1;
+ERROR 1146 (42S02): Table 'demo.c1' doesn't exist
+mysql> select * from a1;
++----+---------+------+------+-------+
+| id | ename   | sal  | comm | total |
++----+---------+------+------+-------+
+|  1 | saleel  | 4000 |   75 |  4075 |
+|  2 | sharmin | 5000 | 1000 | 10000 |
+|  3 | bandish | 7000 |  400 |  7400 |
++----+---------+------+------+-------+
+3 rows in set (0.01 sec)
+
+mysql> insert into a2 values(default,'saleel',4000, 75, defult);
+ERROR 1054 (42S22): Unknown column 'defult' in 'field list'
+mysql> insert into a2 values(default,'saleel',4000, 75, default);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from a2;
++----+--------+------+------+-------+
+| id | ename  | sal  | comm | total |
++----+--------+------+------+-------+
+|  1 | saleel | 4000 |   75 |  4075 |
++----+--------+------+------+-------+
+1 row in set (0.01 sec)
+
+mysql> insert into a2 values(default,'sharmin',5000, 1000, 10000);
+ERROR 3105 (HY000): The value specified for generated column 'total' in table 'a2' is not allowed.
+mysql> insert into a2 values(default,'sharmin',5000, 1000, default);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from a2;
++----+---------+------+------+-------+
+| id | ename   | sal  | comm | total |
++----+---------+------+------+-------+
+|  1 | saleel  | 4000 |   75 |  4075 |
+|  2 | sharmin | 5000 | 1000 |  6000 |
++----+---------+------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select total from a1;
++-------+
+| total |
++-------+
+|  4075 |
+| 10000 |
+|  7400 |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select total from a2;
++-------+
+| total |
++-------+
+|  4075 |
+|  6000 |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from a1;
++----+---------+------+------+-------+
+| id | ename   | sal  | comm | total |
++----+---------+------+------+-------+
+|  1 | saleel  | 4000 |   75 |  4075 |
+|  2 | sharmin | 5000 | 1000 | 10000 |
+|  3 | bandish | 7000 |  400 |  7400 |
++----+---------+------+------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from a2;
++----+---------+------+------+-------+
+| id | ename   | sal  | comm | total |
++----+---------+------+------+-------+
+|  1 | saleel  | 4000 |   75 |  4075 |
+|  2 | sharmin | 5000 | 1000 |  6000 |
++----+---------+------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> update a1 set comm=null where id=1;
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update a2 set comm=null where id=1;
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from a1;
++----+---------+------+------+-------+
+| id | ename   | sal  | comm | total |
++----+---------+------+------+-------+
+|  1 | saleel  | 4000 | NULL |  4075 |
+|  2 | sharmin | 5000 | 1000 | 10000 |
+|  3 | bandish | 7000 |  400 |  7400 |
++----+---------+------+------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from a2;
++----+---------+------+------+-------+
+| id | ename   | sal  | comm | total |
++----+---------+------+------+-------+
+|  1 | saleel  | 4000 | NULL |  NULL |
+|  2 | sharmin | 5000 | 1000 |  6000 |
++----+---------+------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> update a1 set comm=300 where id=1;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update a2 set comm=300 where id=1;
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from a1;
++----+---------+------+------+-------+
+| id | ename   | sal  | comm | total |
++----+---------+------+------+-------+
+|  1 | saleel  | 4000 |  300 |  4075 |
+|  2 | sharmin | 5000 | 1000 | 10000 |
+|  3 | bandish | 7000 |  400 |  7400 |
++----+---------+------+------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from a2;
++----+---------+------+------+-------+
+| id | ename   | sal  | comm | total |
++----+---------+------+------+-------+
+|  1 | saleel  | 4000 |  300 |  4300 |
+|  2 | sharmin | 5000 | 1000 |  6000 |
++----+---------+------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create table a3(id int auto_increment primary key, firstName varchar(10), lastName varchar(10), fullName varchar(20) generated always as (concat(firstName," ", lastName)));
+Query OK, 0 rows affected (0.28 sec)
+
+mysql> desc a3;
++-----------+-------------+------+-----+---------+-------------------+
+| Field     | Type        | Null | Key | Default | Extra             |
++-----------+-------------+------+-----+---------+-------------------+
+| id        | int         | NO   | PRI | NULL    | auto_increment    |
+| firstName | varchar(10) | YES  |     | NULL    |                   |
+| lastName  | varchar(10) | YES  |     | NULL    |                   |
+| fullName  | varchar(20) | YES  |     | NULL    | VIRTUAL GENERATED |
++-----------+-------------+------+-----+---------+-------------------+
+4 rows in set (0.03 sec)
+
+mysql> insert into a3(firstName, lastName) values('saleel', 'bagde'), ('Omkar', 'Rokde');
+Query OK, 2 rows affected (0.07 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> seelct * from a3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'seelct * from a3' at line 1
+mysql> select * from a3;
++----+-----------+----------+--------------+
+| id | firstName | lastName | fullName     |
++----+-----------+----------+--------------+
+|  1 | saleel    | bagde    | saleel bagde |
+|  2 | Omkar     | Rokde    | Omkar Rokde  |
++----+-----------+----------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> select fullName from a3;
++--------------+
+| fullName     |
++--------------+
+| saleel bagde |
+| Omkar Rokde  |
++--------------+
+2 rows in set (0.00 sec)
+
+mysql> desc a3;
++-----------+-------------+------+-----+---------+-------------------+
+| Field     | Type        | Null | Key | Default | Extra             |
++-----------+-------------+------+-----+---------+-------------------+
+| id        | int         | NO   | PRI | NULL    | auto_increment    |
+| firstName | varchar(10) | YES  |     | NULL    |                   |
+| lastName  | varchar(10) | YES  |     | NULL    |                   |
+| fullName  | varchar(20) | YES  |     | NULL    | VIRTUAL GENERATED |
++-----------+-------------+------+-----+---------+-------------------+
+4 rows in set (0.00 sec)
+
+mysql> desc a2;
++-------+-------------+------+-----+---------+-------------------+
+| Field | Type        | Null | Key | Default | Extra             |
++-------+-------------+------+-----+---------+-------------------+
+| id    | int         | NO   | PRI | NULL    | auto_increment    |
+| ename | varchar(10) | YES  |     | NULL    |                   |
+| sal   | int         | YES  |     | NULL    |                   |
+| comm  | int         | YES  |     | NULL    |                   |
+| total | int         | YES  |     | NULL    | VIRTUAL GENERATED |
++-------+-------------+------+-----+---------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> desc a1;
++-------+-------------+------+-----+------------------+-------------------+
+| Field | Type        | Null | Key | Default          | Extra             |
++-------+-------------+------+-----+------------------+-------------------+
+| id    | int         | NO   | PRI | NULL             | auto_increment    |
+| ename | varchar(10) | YES  |     | NULL             |                   |
+| sal   | int         | YES  |     | NULL             |                   |
+| comm  | int         | YES  |     | NULL             |                   |
+| total | int         | YES  |     | (`sal` + `comm`) | DEFAULT_GENERATED |
++-------+-------------+------+-----+------------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> select version();
++-----------+
+| version() |
++-----------+
+| 8.0.26    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> create table a4(id int auto_increment primary key, ename varchar(10), sal int, comm int, total int generated always as (sal+comm) virtual, password varchar(10) invisible);
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> desc a4;
++----------+-------------+------+-----+---------+-------------------+
+| Field    | Type        | Null | Key | Default | Extra             |
++----------+-------------+------+-----+---------+-------------------+
+| id       | int         | NO   | PRI | NULL    | auto_increment    |
+| ename    | varchar(10) | YES  |     | NULL    |                   |
+| sal      | int         | YES  |     | NULL    |                   |
+| comm     | int         | YES  |     | NULL    |                   |
+| total    | int         | YES  |     | NULL    | VIRTUAL GENERATED |
+| password | varchar(10) | YES  |     | NULL    | INVISIBLE         |
++----------+-------------+------+-----+---------+-------------------+
+6 rows in set (0.05 sec)
+
+mysql> insert into a4 values(default,'saleel',4000, 777, default, 'sharmin');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql>
+mysql> insert into a4(id, ename,sal, comm, total, password) values(default,'saleel',4000, 777, default, 'sharmin');
+Query OK, 1 row affected (0.03 sec)
+
+mysql>
+mysql> select * from a4;
++----+--------+------+------+-------+
+| id | ename  | sal  | comm | total |
++----+--------+------+------+-------+
+|  1 | saleel | 4000 |  777 |  4777 |
++----+--------+------+------+-------+
+1 row in set (0.01 sec)
+
+mysql> select id, ename,sal, comm, total, password from a4;
++----+--------+------+------+-------+----------+
+| id | ename  | sal  | comm | total | password |
++----+--------+------+------+-------+----------+
+|  1 | saleel | 4000 |  777 |  4777 | sharmin  |
++----+--------+------+------+-------+----------+
+1 row in set (0.00 sec)
+
+mysql> create table a5(id int auto_increment primary key, ename varchar(10), sal int, comm int, total int generated always as (sal+comm) virtual, password varbinary);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> create table a5(id int auto_increment primary key, ename varchar(10), sal int, comm int, total int generated always as (sal+comm) virtual, password varbinary(20));
+Query OK, 0 rows affected (0.91 sec)
+
+mysql>
+mysql> desc a5;
++----------+---------------+------+-----+---------+-------------------+
+| Field    | Type          | Null | Key | Default | Extra             |
++----------+---------------+------+-----+---------+-------------------+
+| id       | int           | NO   | PRI | NULL    | auto_increment    |
+| ename    | varchar(10)   | YES  |     | NULL    |                   |
+| sal      | int           | YES  |     | NULL    |                   |
+| comm     | int           | YES  |     | NULL    |                   |
+| total    | int           | YES  |     | NULL    | VIRTUAL GENERATED |
+| password | varbinary(20) | YES  |     | NULL    |                   |
++----------+---------------+------+-----+---------+-------------------+
+6 rows in set (0.02 sec)
+
+mysql> insert into a5 values(default,'saleel', 4000, 400, default,'sharmin');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from a5;
++----+--------+------+------+-------+--------------------+
+| id | ename  | sal  | comm | total | password           |
++----+--------+------+------+-------+--------------------+
+|  1 | saleel | 4000 |  400 |  4400 | 0x736861726D696E   |
++----+--------+------+------+-------+--------------------+
+1 row in set (0.01 sec)
+
+mysql> select ename, password from a5;
++--------+--------------------+
+| ename  | password           |
++--------+--------------------+
+| saleel | 0x736861726D696E   |
++--------+--------------------+
+1 row in set (0.00 sec)
+
+mysql> select ename, cast(password as char) from a5;
++--------+------------------------+
+| ename  | cast(password as char) |
++--------+------------------------+
+| saleel | sharmin                |
++--------+------------------------+
+1 row in set (0.00 sec)
+
+mysql> select ename, cast(password as char) R1 from a5;
++--------+---------+
+| ename  | R1      |
++--------+---------+
+| saleel | sharmin |
++--------+---------+
+1 row in set (0.00 sec)
+
+mysql> select ename, cast(password as char) password from a5;
++--------+----------+
+| ename  | password |
++--------+----------+
+| saleel | sharmin  |
++--------+----------+
+1 row in set (0.00 sec)
+
+mysql> desc a1;
++-------+-------------+------+-----+------------------+-------------------+
+| Field | Type        | Null | Key | Default          | Extra             |
++-------+-------------+------+-----+------------------+-------------------+
+| id    | int         | NO   | PRI | NULL             | auto_increment    |
+| ename | varchar(10) | YES  |     | NULL             |                   |
+| sal   | int         | YES  |     | NULL             |                   |
+| comm  | int         | YES  |     | NULL             |                   |
+| total | int         | YES  |     | (`sal` + `comm`) | DEFAULT_GENERATED |
++-------+-------------+------+-----+------------------+-------------------+
+5 rows in set (0.05 sec)
+
+mysql>

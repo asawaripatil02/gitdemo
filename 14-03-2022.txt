@@ -1,0 +1,1298 @@
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 20
+Server version: 8.0.26 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> select database();
++------------+
+| database() |
++------------+
+| demo       |
++------------+
+1 row in set (0.00 sec)
+
+mysql> create table stud(id int primary key, name varchar(20) not null, mobile char(10) unique, sal float(8,2) check(sal>=10000) );
+Query OK, 0 rows affected, 1 warning (1.08 sec)
+
+mysql> desc stud;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   | PRI | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  | UNI | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> show create table stud;
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                                                                                                               |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| stud  | CREATE TABLE `stud` (
+  `id` int NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `mobile` char(10) DEFAULT NULL,
+  `sal` float(8,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `mobile` (`mobile`),
+  CONSTRAINT `stud_chk_1` CHECK ((`sal` >= 10000))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> create table stud1(id int primary key, name varchar(20) not null, mobile char(10) unique, sal float(8,2) default 10000);
+Query OK, 0 rows affected, 1 warning (0.32 sec)
+
+mysql> create table stud2(id int primary key, name varchar(20) not null, mobile char(10) unique, sal float(8,2) default 1000012);
+ERROR 1067 (42000): Invalid default value for 'sal'
+mysql> create table stud2(id int primary key, name varchar(20) not null, mobile char(10) unique, sal float(8,2) default 100001.2);
+Query OK, 0 rows affected, 1 warning (0.30 sec)
+
+mysql> drop table stud1, stud2;
+Query OK, 0 rows affected (0.29 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_demo |
++----------------+
+| a              |
+| a1             |
+| a2             |
+| a3             |
+| a4             |
+| b              |
+| c              |
+| d              |
+| emp            |
+| stud           |
+| student        |
+| student1       |
++----------------+
+12 rows in set (0.01 sec)
+
+mysql> show create table a;
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                               |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| a     | CREATE TABLE `a` (
+  `c1` int DEFAULT NULL,
+  `c2` char(1) DEFAULT NULL,
+  `c3` varchar(2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> show create table stud;
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                                                                                                               |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| stud  | CREATE TABLE `stud` (
+  `id` int NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `mobile` char(10) DEFAULT NULL,
+  `sal` float(8,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `mobile` (`mobile`),
+  CONSTRAINT `stud_chk_1` CHECK ((`sal` >= 10000))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> create table stud2(id int, name varchar(20) not null, mobile char(10), sal float(8,2));
+Query OK, 0 rows affected, 1 warning (0.60 sec)
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | YES  |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.04 sec)
+
+mysql> create table stud3(id int, name varchar(20) not null, mobile char(10), sal float(8,2));
+Query OK, 0 rows affected, 1 warning (0.36 sec)
+
+mysql> desc stud3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | YES  |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.04 sec)
+
+mysql> alter table stud2 add primary key(id);
+Query OK, 0 rows affected (0.61 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table stud3 add constraint pk_id primary key(id);
+Query OK, 0 rows affected (0.55 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   | PRI | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.03 sec)
+
+mysql> desc stud3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   | PRI | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table stud2 drop primary key;
+Query OK, 0 rows affected (1.29 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table stud3 drop primary key;
+Query OK, 0 rows affected (0.64 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> desc stud3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table stud2 add primary key(id);
+Query OK, 0 rows affected (0.43 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table stud3 add constraint pk_id primary key(id);
+Query OK, 0 rows affected (0.57 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   | PRI | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc stud3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   | PRI | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table stud2 add unique key(mobile);
+Query OK, 0 rows affected (0.40 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table stud3 add constraint uni_mobile unique key(mobile);
+Query OK, 0 rows affected (0.24 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   | PRI | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  | UNI | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> desc stud3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   | PRI | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  | UNI | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc information_schema.table_constraints;
++--------------------+-------------+------+-----+---------+-------+
+| Field              | Type        | Null | Key | Default | Extra |
++--------------------+-------------+------+-----+---------+-------+
+| CONSTRAINT_CATALOG | varchar(64) | YES  |     | NULL    |       |
+| CONSTRAINT_SCHEMA  | varchar(64) | YES  |     | NULL    |       |
+| CONSTRAINT_NAME    | varchar(64) | YES  |     | NULL    |       |
+| TABLE_SCHEMA       | varchar(64) | YES  |     | NULL    |       |
+| TABLE_NAME         | varchar(64) | YES  |     | NULL    |       |
+| CONSTRAINT_TYPE    | varchar(11) | NO   |     |         |       |
+| ENFORCED           | varchar(3)  | NO   |     |         |       |
++--------------------+-------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> select TABLE_NAME,CONSTRAINT_TYPE, CONSTRAINT_NAME from information_schema.table_constraints where CONSTRAINT_SCHEMA='demo';
++------------+-----------------+-----------------+
+| TABLE_NAME | CONSTRAINT_TYPE | CONSTRAINT_NAME |
++------------+-----------------+-----------------+
+| a1         | PRIMARY KEY     | PRIMARY         |
+| a2         | PRIMARY KEY     | PRIMARY         |
+| a3         | PRIMARY KEY     | PRIMARY         |
+| a4         | PRIMARY KEY     | PRIMARY         |
+| emp        | PRIMARY KEY     | PRIMARY         |
+| stud       | UNIQUE          | mobile          |
+| stud       | PRIMARY KEY     | PRIMARY         |
+| stud       | CHECK           | stud_chk_1      |
+| stud2      | UNIQUE          | mobile          |
+| stud2      | PRIMARY KEY     | PRIMARY         |
+| stud3      | PRIMARY KEY     | PRIMARY         |
+| stud3      | UNIQUE          | uni_mobile      |
++------------+-----------------+-----------------+
+12 rows in set (0.00 sec)
+
+mysql> alter table stud2 drop primary key;
+Query OK, 0 rows affected (1.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table stud3 drop primary key;
+Query OK, 0 rows affected (1.93 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select TABLE_NAME,CONSTRAINT_TYPE, CONSTRAINT_NAME from information_schema.table_constraints where CONSTRAINT_SCHEMA='demo';
++------------+-----------------+-----------------+
+| TABLE_NAME | CONSTRAINT_TYPE | CONSTRAINT_NAME |
++------------+-----------------+-----------------+
+| a1         | PRIMARY KEY     | PRIMARY         |
+| a2         | PRIMARY KEY     | PRIMARY         |
+| a3         | PRIMARY KEY     | PRIMARY         |
+| a4         | PRIMARY KEY     | PRIMARY         |
+| emp        | PRIMARY KEY     | PRIMARY         |
+| stud       | UNIQUE          | mobile          |
+| stud       | PRIMARY KEY     | PRIMARY         |
+| stud       | CHECK           | stud_chk_1      |
+| stud2      | UNIQUE          | mobile          |
+| stud3      | UNIQUE          | uni_mobile      |
++------------+-----------------+-----------------+
+10 rows in set (0.01 sec)
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  | UNI | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> desc stud3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  | UNI | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table stud2 drop index mobile;
+Query OK, 0 rows affected (0.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table stud3 drop index uni_mobile;
+Query OK, 0 rows affected (0.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc stud3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table stud2 add check(sal>=1000);
+Query OK, 0 rows affected (0.79 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table stud3 add constraint chk_sal check(sal>=1000);
+Query OK, 0 rows affected (1.34 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> desc stud3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select TABLE_NAME,CONSTRAINT_TYPE, CONSTRAINT_NAME from information_schema.table_constraints where CONSTRAINT_SCHEMA='demo';
++------------+-----------------+-----------------+
+| TABLE_NAME | CONSTRAINT_TYPE | CONSTRAINT_NAME |
++------------+-----------------+-----------------+
+| a1         | PRIMARY KEY     | PRIMARY         |
+| a2         | PRIMARY KEY     | PRIMARY         |
+| a3         | PRIMARY KEY     | PRIMARY         |
+| a4         | PRIMARY KEY     | PRIMARY         |
+| emp        | PRIMARY KEY     | PRIMARY         |
+| stud       | UNIQUE          | mobile          |
+| stud       | PRIMARY KEY     | PRIMARY         |
+| stud       | CHECK           | stud_chk_1      |
+| stud2      | CHECK           | stud2_chk_1     |
+| stud3      | CHECK           | chk_sal         |
++------------+-----------------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> alter table stud2 add check(name='saleel');
+Query OK, 0 rows affected (0.63 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select TABLE_NAME,CONSTRAINT_TYPE, CONSTRAINT_NAME from information_schema.table_constraints where CONSTRAINT_SCHEMA='demo';
++------------+-----------------+-----------------+
+| TABLE_NAME | CONSTRAINT_TYPE | CONSTRAINT_NAME |
++------------+-----------------+-----------------+
+| a1         | PRIMARY KEY     | PRIMARY         |
+| a2         | PRIMARY KEY     | PRIMARY         |
+| a3         | PRIMARY KEY     | PRIMARY         |
+| a4         | PRIMARY KEY     | PRIMARY         |
+| emp        | PRIMARY KEY     | PRIMARY         |
+| stud       | UNIQUE          | mobile          |
+| stud       | PRIMARY KEY     | PRIMARY         |
+| stud       | CHECK           | stud_chk_1      |
+| stud2      | CHECK           | stud2_chk_1     |
+| stud2      | CHECK           | stud2_chk_2     |
+| stud3      | CHECK           | chk_sal         |
++------------+-----------------+-----------------+
+11 rows in set (0.02 sec)
+
+mysql> alter table stud2 drop check stud_chk_1;
+ERROR 3821 (HY000): Check constraint 'stud_chk_1' is not found in the table.
+mysql> alter table stud2 drop check stud2_chk_1;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table stud2 drop check stud2_chk_2;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table stud3 drop check constraint chk_sal;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'constraint chk_sal' at line 1
+mysql> alter table stud3 drop constraint chk_sal;
+Query OK, 0 rows affected (0.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table stud3 drop constraint chk_sal;select TABLE_NAME,CONSTRAINT_TYPE, CONSTRAINT_NAME from information_schema.table_constraints where CONSTRAINT_SCHEMA='demo';
+ERROR 3940 (HY000): Constraint 'chk_sal' does not exist.
++------------+-----------------+-----------------+
+| TABLE_NAME | CONSTRAINT_TYPE | CONSTRAINT_NAME |
++------------+-----------------+-----------------+
+| a1         | PRIMARY KEY     | PRIMARY         |
+| a2         | PRIMARY KEY     | PRIMARY         |
+| a3         | PRIMARY KEY     | PRIMARY         |
+| a4         | PRIMARY KEY     | PRIMARY         |
+| emp        | PRIMARY KEY     | PRIMARY         |
+| stud       | UNIQUE          | mobile          |
+| stud       | PRIMARY KEY     | PRIMARY         |
+| stud       | CHECK           | stud_chk_1      |
++------------+-----------------+-----------------+
+8 rows in set (0.01 sec)
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.05 sec)
+
+mysql> alter table stud3 drop constraint chk_sal;select TABLE_NAME,CONSTRAINT_TYPE, CONSTRAINT_NAME from information_schema.table_constraints where CONSTRAINT_SCHEMA='demo';
+ERROR 3940 (HY000): Constraint 'chk_sal' does not exist.
++------------+-----------------+-----------------+
+| TABLE_NAME | CONSTRAINT_TYPE | CONSTRAINT_NAME |
++------------+-----------------+-----------------+
+| a1         | PRIMARY KEY     | PRIMARY         |
+| a2         | PRIMARY KEY     | PRIMARY         |
+| a3         | PRIMARY KEY     | PRIMARY         |
+| a4         | PRIMARY KEY     | PRIMARY         |
+| emp        | PRIMARY KEY     | PRIMARY         |
+| stud       | UNIQUE          | mobile          |
+| stud       | PRIMARY KEY     | PRIMARY         |
+| stud       | CHECK           | stud_chk_1      |
++------------+-----------------+-----------------+
+8 rows in set (0.00 sec)
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table stud2 modify name varchar(20);
+Query OK, 0 rows affected (0.66 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table stud2 modify name varchar(20) not null;
+Query OK, 0 rows affected (0.42 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | NO   |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table stud2 modify name varchar(20);
+Query OK, 0 rows affected (0.33 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc stud2;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   |     | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| mobile | char(10)    | YES  |     | NULL    |       |
+| sal    | float(8,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> show create table stud2;
++-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                        |
++-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| stud2 | CREATE TABLE `stud2` (
+  `id` int NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `mobile` char(10) DEFAULT NULL,
+  `sal` float(8,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> create table t1(id int primary key, ename varchar(10))
+    -> ;
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> create table t2(id int foreign key references t1(id), ename varchar(10));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key references t1(id), ename varchar(10))' at line 1
+mysql>
+mysql>
+mysql> create table t2(id int references t1(id), ename varchar(10));
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> insert into t2 values(1,'saleel');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> drop table t2;
+Query OK, 0 rows affected (0.32 sec)
+
+mysql> create table t2(cid int, course_name varchar(10), foreign key (cid) references t1(id) );
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> insert into t2 values(1,'saleel');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`demo`.`t2`, CONSTRAINT `t2_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `t1` (`id`))
+mysql> insert into t1 values(1,'saleel');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into t2 values(1,'dbda');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into t2 values(1,'pg-dac');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from t1;
++----+--------+
+| id | ename  |
++----+--------+
+|  1 | saleel |
++----+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from t2;
++------+-------------+
+| cid  | course_name |
++------+-------------+
+|    1 | dbda        |
+|    1 | pg-dac      |
++------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into t2 values(null,'No-sql');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into t2 values(null,'mongodb');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from t1;
++----+--------+
+| id | ename  |
++----+--------+
+|  1 | saleel |
++----+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from t2;
++------+-------------+
+| cid  | course_name |
++------+-------------+
+|    1 | dbda        |
+|    1 | pg-dac      |
+| NULL | No-sql      |
+| NULL | mongodb     |
++------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> update t1 set id=2 where id=1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`demo`.`t2`, CONSTRAINT `t2_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `t1` (`id`))
+mysql> delete from t1 where id=1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`demo`.`t2`, CONSTRAINT `t2_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `t1` (`id`))
+mysql> update t2 set id=2 where cid is null;
+ERROR 1054 (42S22): Unknown column 'id' in 'field list'
+mysql> update t2 set cid=2 where cid is null;
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`demo`.`t2`, CONSTRAINT `t2_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `t1` (`id`))
+mysql>
+mysql> update t2 set cid=1 where cid is null;
+Query OK, 2 rows affected (0.03 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from t1;
++----+--------+
+| id | ename  |
++----+--------+
+|  1 | saleel |
++----+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from t2;
++------+-------------+
+| cid  | course_name |
++------+-------------+
+|    1 | dbda        |
+|    1 | pg-dac      |
+|    1 | No-sql      |
+|    1 | mongodb     |
++------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> drop table t1;
+ERROR 3730 (HY000): Cannot drop table 't1' referenced by a foreign key constraint 't2_ibfk_1' on table 't2'.
+mysql>
+mysql> delete from t2 where cid=1desc t1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 't1' at line 1
+mysql> desc t1;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int         | NO   | PRI | NULL    |       |
+| ename | varchar(10) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.04 sec)
+
+mysql> desc t2;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| cid         | int         | YES  | MUL | NULL    |       |
+| course_name | varchar(10) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc t1;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int         | NO   | PRI | NULL    |       |
+| ename | varchar(10) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc t2;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| cid         | int         | YES  | MUL | NULL    |       |
+| course_name | varchar(10) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql>
+mysql> insert int t1 vbalues(2,'sharmin');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'int t1 vbalues(2,'sharmin')' at line 1
+mysql> insert into t1 values(2,'sharmin');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from t1;
++----+---------+
+| id | ename   |
++----+---------+
+|  1 | saleel  |
+|  2 | sharmin |
++----+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from t2;
++------+-------------+
+| cid  | course_name |
++------+-------------+
+|    1 | dbda        |
+|    1 | pg-dac      |
+|    1 | No-sql      |
+|    1 | mongodb     |
++------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into t2 values(2,'dbda'), (2,'mongodb'), (2, 'pg-dac');
+Query OK, 3 rows affected (0.06 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from t1;
++----+---------+
+| id | ename   |
++----+---------+
+|  1 | saleel  |
+|  2 | sharmin |
++----+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from t2;
++------+-------------+
+| cid  | course_name |
++------+-------------+
+|    1 | dbda        |
+|    1 | pg-dac      |
+|    1 | No-sql      |
+|    1 | mongodb     |
+|    2 | dbda        |
+|    2 | mongodb     |
+|    2 | pg-dac      |
++------+-------------+
+7 rows in set (0.00 sec)
+
+mysql> insert into t2 values(2,'dbda'), (2,'mongodb'), (2, 'pg-dac');
+Query OK, 3 rows affected (0.06 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from t2;
++------+-------------+
+| cid  | course_name |
++------+-------------+
+|    1 | dbda        |
+|    1 | pg-dac      |
+|    1 | No-sql      |
+|    1 | mongodb     |
+|    2 | dbda        |
+|    2 | mongodb     |
+|    2 | pg-dac      |
+|    2 | dbda        |
+|    2 | mongodb     |
+|    2 | pg-dac      |
++------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> alter table t2 add RowID int primary key auto_increment;
+Query OK, 0 rows affected (0.65 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from t2;
++------+-------------+-------+
+| cid  | course_name | RowID |
++------+-------------+-------+
+|    1 | dbda        |     1 |
+|    1 | pg-dac      |     2 |
+|    1 | No-sql      |     3 |
+|    1 | mongodb     |     4 |
+|    2 | dbda        |     5 |
+|    2 | mongodb     |     6 |
+|    2 | pg-dac      |     7 |
+|    2 | dbda        |     8 |
+|    2 | mongodb     |     9 |
+|    2 | pg-dac      |    10 |
++------+-------------+-------+
+10 rows in set (0.00 sec)
+
+mysql> alter table t2 drop RowID;
+Query OK, 10 rows affected (0.49 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from t2;
++------+-------------+
+| cid  | course_name |
++------+-------------+
+|    1 | dbda        |
+|    1 | pg-dac      |
+|    1 | No-sql      |
+|    1 | mongodb     |
+|    2 | dbda        |
+|    2 | mongodb     |
+|    2 | pg-dac      |
+|    2 | dbda        |
+|    2 | mongodb     |
+|    2 | pg-dac      |
++------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> alter table t2 add RowID int primary key auto_increment first;
+Query OK, 0 rows affected (0.41 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from t2;
++-------+------+-------------+
+| RowID | cid  | course_name |
++-------+------+-------------+
+|     1 |    1 | dbda        |
+|     2 |    1 | pg-dac      |
+|     3 |    1 | No-sql      |
+|     4 |    1 | mongodb     |
+|     5 |    2 | dbda        |
+|     6 |    2 | mongodb     |
+|     7 |    2 | pg-dac      |
+|     8 |    2 | dbda        |
+|     9 |    2 | mongodb     |
+|    10 |    2 | pg-dac      |
++-------+------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> delete from t2 where RowID>=8;
+Query OK, 3 rows affected (0.07 sec)
+
+mysql> select * from t2;
++-------+------+-------------+
+| RowID | cid  | course_name |
++-------+------+-------------+
+|     1 |    1 | dbda        |
+|     2 |    1 | pg-dac      |
+|     3 |    1 | No-sql      |
+|     4 |    1 | mongodb     |
+|     5 |    2 | dbda        |
+|     6 |    2 | mongodb     |
+|     7 |    2 | pg-dac      |
++-------+------+-------------+
+7 rows in set (0.00 sec)
+
+mysql> desc information_schema.table_constraints;
++--------------------+-------------+------+-----+---------+-------+
+| Field              | Type        | Null | Key | Default | Extra |
++--------------------+-------------+------+-----+---------+-------+
+| CONSTRAINT_CATALOG | varchar(64) | YES  |     | NULL    |       |
+| CONSTRAINT_SCHEMA  | varchar(64) | YES  |     | NULL    |       |
+| CONSTRAINT_NAME    | varchar(64) | YES  |     | NULL    |       |
+| TABLE_SCHEMA       | varchar(64) | YES  |     | NULL    |       |
+| TABLE_NAME         | varchar(64) | YES  |     | NULL    |       |
+| CONSTRAINT_TYPE    | varchar(11) | NO   |     |         |       |
+| ENFORCED           | varchar(3)  | NO   |     |         |       |
++--------------------+-------------+------+-----+---------+-------+
+7 rows in set (0.04 sec)
+
+mysql> select TABLE_NAME, CONSTRAINT_TYPE, CONSTRAINT_NAME from information_schema.table_constraints where CONSTRAINT_SCHEMA='demo';
++------------+-----------------+-----------------+
+| TABLE_NAME | CONSTRAINT_TYPE | CONSTRAINT_NAME |
++------------+-----------------+-----------------+
+| a1         | PRIMARY KEY     | PRIMARY         |
+| a2         | PRIMARY KEY     | PRIMARY         |
+| a3         | PRIMARY KEY     | PRIMARY         |
+| a4         | PRIMARY KEY     | PRIMARY         |
+| emp        | PRIMARY KEY     | PRIMARY         |
+| stud       | UNIQUE          | mobile          |
+| stud       | PRIMARY KEY     | PRIMARY         |
+| stud       | CHECK           | stud_chk_1      |
+| t1         | PRIMARY KEY     | PRIMARY         |
+| t2         | PRIMARY KEY     | PRIMARY         |
+| t2         | FOREIGN KEY     | t2_ibfk_1       |
++------------+-----------------+-----------------+
+11 rows in set (0.02 sec)
+
+mysql> drop table t1;
+ERROR 3730 (HY000): Cannot drop table 't1' referenced by a foreign key constraint 't2_ibfk_1' on table 't2'.
+mysql> alter table t2 drop constraint t2_ibfk_1;
+Query OK, 0 rows affected (0.18 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> drop table t1;
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> use db1;
+Database changed
+mysql> select * from emp;
++-------+---------+-----------+------+---------------------+------+------+--------+---------+--------------+------------+------------+--------------------------+----------+
+| EMPNO | ENAME   | JOB       | MGR  | HIREDATE            | SAL  | COMM | DEPTNO | BONUSID | USER NAME    | PWD        | phone      | emailID                  | isActive |
++-------+---------+-----------+------+---------------------+------+------+--------+---------+--------------+------------+------------+--------------------------+----------+
+|  7369 | SMITH   | CLERK     | 7902 | 1980-12-17 06:06:03 |  800 | NULL |     20 |       2 | TRITONE      | a12recmpm  | 7032300023 | simple75@hotmail.com     |        0 |
+|  7415 | AARAV   | CLERK     | 7902 | 1981-12-31 06:05:07 | 3350 | NULL |     10 |    NULL | AARAV        | NULL       | 7032300084 | NULL                     |        0 |
+|  7421 | THOMAS  | CLERK     | 7920 | 1981-07-19 00:00:00 | 1750 | NULL |     10 |       1 | THOMAS       | r50mpm     | 7032300011 | NULL                     |        0 |
+|  7499 | ALLEN   | SALESMAN  | 7698 | 1981-02-20 00:40:00 | 1600 |  300 |     30 |       4 | ALWAYS TESTE | sales@2017 | 7032300096 | godfather@gmail.com      |        1 |
+|  7521 | WARD    | SALESMAN  | 7698 | 1981-02-22 12:00:00 | 1250 |  500 |     30 |       1 | WARD         | sales@2017 | 7132300034 | redbull@rediffmail.com   |        1 |
+|  7566 | JONES   | MANAGER   | 7839 | 1981-04-02 18:25:15 | 2975 | NULL |     20 |       4 | HONEYCOMB    | a12recmpm  | 7132300039 | mypet@rediffmail.com     |        1 |
+|  7654 | MARTIN  | SALESMAN  | 7698 | 1981-09-28 00:00:00 | 1250 | 1400 |     30 |       6 | LIFE RACER   | sales@2017 | 7132300050 | tiger@gmail.com          |        1 |
+|  7698 | BLAKE   | MANAGER   | 7839 | 1981-05-01 01:49:12 | 2850 | NULL |     30 |       1 | BIG BEN      | sales@2017 | 7132300027 | hostom_div@yahoomail.com |        1 |
+|  7782 | CLARK   | MANAGER   | 7839 | 1981-06-09 21:00:45 | 2450 | NULL |     10 |       3 | CLARK        | r50mpm     | 7032300001 | fineOne@gmail.com        |        1 |
+|  7788 | SCOTT   | ANALYST   | 7566 | 1982-12-09 00:00:00 | 3000 | NULL |     20 |       3 | WHITE SAND   | a12recmpm  | NULL       | startmail@gmail.com      |        1 |
+|  7839 | KING    | PRESIDENT | NULL | 1981-11-17 13:06:27 | 5000 | NULL |     10 |       1 | KING         | r50mpm     | 7132300081 | king&queen@gmail.com     |        1 |
+|  7844 | TURNER  | SALESMAN  | 7698 | 1981-09-08 06:00:00 | 1500 |    0 |     30 |       5 | SAND DUST    | sales@2017 | NULL       | peter_son@yahoomail.com  |        1 |
+|  7876 | ADAMS   | CLERK     | 7788 | 1983-01-12 10:45:00 | 1300 | NULL |     20 |       1 | CRAZY ANYONE | a12recmpm  | 7132300086 | adams.tree@gmail.com     |        1 |
+|  7900 | JAMES   | CLERK     | 7698 | 1981-12-03 18:09:00 |  950 | NULL |     30 |       2 | CRAZY LEADER | sales@2017 | 7132300042 | bond007@gmail.com        |        1 |
+|  7902 | FORD    | ANALYST   | 7566 | 1981-12-03 04:30:00 | 3000 | NULL |     20 |       4 | CONBRIO      | a12recmpm  | NULL       | NULL                     |        0 |
+|  7919 | HOFFMAN | MANAGER   | 7566 | 1982-03-24 00:00:00 | 4150 | NULL |     30 |       3 | INTERVAL     | sales@2017 | NULL       | tree.House@hatmail.com   |        1 |
+|  7920 | GRASS   | SALESMAN  | 7919 | 1980-02-14 06:03:00 | 2575 | 2700 |     30 |       5 | GRASS        | sales@2017 | NULL       | ranibow@rediffmail.com   |        1 |
+|  7934 | MILLER  | CLERK     | 7782 | 1982-01-23 00:00:00 | 1300 | NULL |     10 |       2 | QUARTERNOTE  | r50mpm     | 7132300055 | NULL                     |        0 |
+|  7945 | AARUSH  | SALESMAN  | 7902 | 1980-02-14 00:00:00 | 1350 | 2700 |     30 |    NULL | AARUSH       | ABCDEF     | NULL       | blankSpace@gmail.com     |        0 |
+|  7949 | ALEX    | MANAGER   | 7698 | 1982-01-24 06:20:00 | 3000 |  500 |     30 |       5 | QUARTERREST  | sales@2017 | 7156567183 | NULL                     |        1 |
++-------+---------+-----------+------+---------------------+------+------+--------+---------+--------------+------------+------------+--------------------------+----------+
+20 rows in set (0.01 sec)
+
+mysql> select * from dept;
++--------+------------+----------+------------+
+| DEPTNO | DNAME      | LOC      | PWD        |
++--------+------------+----------+------------+
+|     10 | ACCOUNTING | NEW YORK | r50mpm     |
+|     20 | RESEARCH   | DALLAS   | a12recmpm  |
+|     30 | SALES      | CHICAGO  | sales@2017 |
+|     40 | OPERATIONS | BOSTON   | opr@123    |
++--------+------------+----------+------------+
+4 rows in set (0.10 sec)
+
+mysql> use demo;
+Database changed
+mysql> select * from dept;
+ERROR 1146 (42S02): Table 'demo.dept' doesn't exist
+mysql>
+mysql> create table dept like db1.dept;
+Query OK, 0 rows affected (1.66 sec)
+
+mysql> desc db1.dept;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| DEPTNO | int         | NO   | PRI | NULL    |       |
+| DNAME  | varchar(12) | YES  |     | NULL    |       |
+| LOC    | varchar(10) | YES  |     | NULL    |       |
+| PWD    | varchar(20) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.04 sec)
+
+mysql> select database();
++------------+
+| database() |
++------------+
+| demo       |
++------------+
+1 row in set (0.00 sec)
+
+mysql> desc dept;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| DEPTNO | int         | NO   | PRI | NULL    |       |
+| DNAME  | varchar(12) | YES  |     | NULL    |       |
+| LOC    | varchar(10) | YES  |     | NULL    |       |
+| PWD    | varchar(20) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.04 sec)
+
+mysql> select * from db1.dept;
++--------+------------+----------+------------+
+| DEPTNO | DNAME      | LOC      | PWD        |
++--------+------------+----------+------------+
+|     10 | ACCOUNTING | NEW YORK | r50mpm     |
+|     20 | RESEARCH   | DALLAS   | a12recmpm  |
+|     30 | SALES      | CHICAGO  | sales@2017 |
+|     40 | OPERATIONS | BOSTON   | opr@123    |
++--------+------------+----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from dept;
+Empty set (0.01 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> desc db1.dept;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| DEPTNO | int         | NO   | PRI | NULL    |       |
+| DNAME  | varchar(12) | YES  |     | NULL    |       |
+| LOC    | varchar(10) | YES  |     | NULL    |       |
+| PWD    | varchar(20) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc dept;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| DEPTNO | int         | NO   | PRI | NULL    |       |
+| DNAME  | varchar(12) | YES  |     | NULL    |       |
+| LOC    | varchar(10) | YES  |     | NULL    |       |
+| PWD    | varchar(20) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql>
+
+
+q1. how to give composit(more than one col) PK / FK. Possibel
+
+
+create table parent_table (c1 int primary key, c2 int primary key, c3 int);   -- column level - Error
+
+create table parent_table (c1 int, c2 varchar(10), c3 int, primary key(c1, c2)); 						-- will work
+
+
+
+create table parent_table (c1 int, c2 varchar(10), c3 int, constraint pk_c1_c2 primary key(c1, c2));	-- will work
+
+
+
+create table child_table (a1 int, a2 int, a3 int, constraint fk_a1 foreign key(a1) references parent_table(c1));
+
+create table child_table (a1 int, a2 int, a3 int, constraint fk_a1 foreign key(a1) references parent_table(c2)); -- Error (dt is different)
+
+ 
+create table child_table (a1 int, a2 varchar(10), a3 int, constraint fk_a1 foreign key(a1, a2) references parent_table(c1, c2));   -- RUN
+
+
+create table child_table (a1 int, a2 varchar(10), a3 int, constraint fk_a1 foreign key(a1, a2) references parent_table(c2, c1));
+
+
+1(P):m(C)
+
+
+
+q2. can use give auto_increment in parent table (using ALTER).
+
+
+alter table parent_table modify c1 int auto_increment;  [the col on which you want ot give auto_increment must be indexed (primary key/ unique key)]
+
+
+
+
+create table t1(c1 int not null unique, c2 int);
+
+
+------------------------------------------------------------------
+
+mysql> create table t1(c1 int not null unique, c2 int);
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> desc t1;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| c1    | int  | NO   | PRI | NULL    |       |
+| c2    | int  | YES  |     | NULL    |       |
++-------+------+------+-----+---------+-------+
+2 rows in set (0.04 sec)
+
+mysql>
+mysql> create table t2(c0 int primary key, c1 int not null unique, c2 int);
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> desc t2;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| c0    | int  | NO   | PRI | NULL    |       |
+| c1    | int  | NO   | UNI | NULL    |       |
+| c2    | int  | YES  |     | NULL    |       |
++-------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+----------------------------------------------------------------------------
+
+mysql> create table parent_table (c1 int primary key, c2 int primary key, c3 int);
+ERROR 1068 (42000): Multiple primary key defined
+mysql> create table parent_table (c1 int, c2 varchar(10), c3 int, primary key(c1, c2));
+Query OK, 0 rows affected (0.33 sec)
+
+mysql> desc parent_table (c1 int, c2 varchar(10), c3 int, primary key(c1, c2));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(c1 int, c2 varchar(10), c3 int, primary key(c1, c2))' at line 1
+mysql> desc parent_table;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| c1    | int         | NO   | PRI | NULL    |       |
+| c2    | varchar(10) | NO   | PRI | NULL    |       |
+| c3    | int         | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+mysql> drop table parent_table;
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> create table parent_table (c1 int, c2 varchar(10), c3 int, constraint pk_c1_c2 primary key(c1, c2));
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> create table child_table (a1 int, a2 int, a3 int, constraint fk_a1 foreign key references parent_table(c1));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'references parent_table(c1))' at line 1
+mysql> create table child_table (a1 int, a2 int, a3 int, constraint fk_a1 foreign key(a1) references parent_table(c1));
+Query OK, 0 rows affected (0.79 sec)
+
+mysql> desc parent_table;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| c1    | int         | NO   | PRI | NULL    |       |
+| c2    | varchar(10) | NO   | PRI | NULL    |       |
+| c3    | int         | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.03 sec)
+
+mysql> desc child_table;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| a1    | int  | YES  | MUL | NULL    |       |
+| a2    | int  | YES  |     | NULL    |       |
+| a3    | int  | YES  |     | NULL    |       |
++-------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into patent_table values(1, 'abc', 1);
+ERROR 1146 (42S02): Table 'demo.patent_table' doesn't exist
+mysql> insert into parent_table values(1, 'abc', 1);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from parent_table;
++----+-----+------+
+| c1 | c2  | c3   |
++----+-----+------+
+|  1 | abc |    1 |
++----+-----+------+
+1 row in set (0.00 sec)
+
+mysql> insert into child_table values(2, 2, 2);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`demo`.`child_table`, CONSTRAINT `fk_a1` FOREIGN KEY (`a1`) REFERENCES `parent_table` (`c1`))
+mysql> insert into child_table values(1, 1, 1);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from child_table;
++------+------+------+
+| a1   | a2   | a3   |
++------+------+------+
+|    1 |    1 |    1 |
++------+------+------+
+1 row in set (0.00 sec)
+
+mysql> drop table child_table;
+Query OK, 0 rows affected (0.36 sec)
+
+mysql> create table child_table (a1 int, a2 int, a3 int, constraint fk_a1 foreign key(a1) references parent_table(c2));
+ERROR 3780 (HY000): Referencing column 'a1' and referenced column 'c2' in foreign key constraint 'fk_a1' are incompatible.
+mysql>
+mysql> create table child_table (a1 int, a2 int, a3 int, constraint fk_a1 foreign key(a1, a2) references parent_table(c1, c2));
+ERROR 3780 (HY000): Referencing column 'a2' and referenced column 'c2' in foreign key constraint 'fk_a1' are incompatible.
+mysql>
+mysql> create table child_table (a1 int, a2 varchar(10), a3 int, constraint fk_a1 foreign key(a1, a2) references parent_table(c1, c2));
+Query OK, 0 rows affected (0.76 sec)
+
+mysql>
+mysql> drop table child_table;
+Query OK, 0 rows affected (0.30 sec)
+
+mysql> create table child_table (a1 int, a2 varchar(10), a3 int, constraint fk_a1 foreign key(a1, a2) references parent_table(c2, c1));
+ERROR 3780 (HY000): Referencing column 'a1' and referenced column 'c2' in foreign key constraint 'fk_a1' are incompatible.
+mysql> desc parent_table;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| c1    | int         | NO   | PRI | NULL    |       |
+| c2    | varchar(10) | NO   | PRI | NULL    |       |
+| c3    | int         | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+mysql> alter table parent_Table modify c1 int primmary key auto_increment;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'primmary key auto_increment' at line 1
+mysql> alter table parent_Table modify c1 int primary key auto_increment;
+ERROR 1068 (42000): Multiple primary key defined
+mysql> alter table parent_table modify c1 int primary key auto_increment;
+ERROR 1068 (42000): Multiple primary key defined
+mysql>
+mysql>
+mysql> alter table parent_table modify c1 int auto_increment;
+Query OK, 1 row affected (0.48 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> desc parent_table;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| c1    | int         | NO   | PRI | NULL    | auto_increment |
+| c2    | varchar(10) | NO   | PRI | NULL    |                |
+| c3    | int         | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+mysql> create table t1(c1 int not null unique, c2 int);
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> desc t1;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| c1    | int  | NO   | PRI | NULL    |       |
+| c2    | int  | YES  |     | NULL    |       |
++-------+------+------+-----+---------+-------+
+2 rows in set (0.04 sec)
+
+mysql>
+mysql> create table t2(c0 int primary key, c1 int not null unique, c2 int);
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> desc t2;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| c0    | int  | NO   | PRI | NULL    |       |
+| c1    | int  | NO   | UNI | NULL    |       |
+| c2    | int  | YES  |     | NULL    |       |
++-------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table t3(a1 int, c2 int, constraint fk_a1 foreign key(a1) references t1(c1));
+Query OK, 0 rows affected (0.30 sec)
+
+mysql> create table t4(a1 int, c2 int, constraint fk_a1 foreign key(a1) references t2(c1));
+ERROR 1826 (HY000): Duplicate foreign key constraint name 'fk_a1'
+mysql> create table t4(a1 int, c2 int, constraint fk_a3 foreign key(a1) references t2(c1));
+Query OK, 0 rows affected (0.35 sec)
+
+mysql>
+mysql>
+mysql> create table t5(a1 int unique auto_increment, c2 int);
+Query OK, 0 rows affected (0.31 sec)
+
+mysql> desc t5;
++-------+------+------+-----+---------+----------------+
+| Field | Type | Null | Key | Default | Extra          |
++-------+------+------+-----+---------+----------------+
+| a1    | int  | NO   | PRI | NULL    | auto_increment |
+| c2    | int  | YES  |     | NULL    |                |
++-------+------+------+-----+---------+----------------+
+2 rows in set (0.04 sec)
+
+mysql> create table t6(aa1 int, aa2 int, constraint fk_aa1 foreign key(aa1) references t5(a1));
+Query OK, 0 rows affected (0.27 sec)
+
+mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
