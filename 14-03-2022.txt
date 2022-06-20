@@ -1,4 +1,4 @@
-mysql: [Warning] Using a password on the command line interface can be insecure.
+mysql: [Warning] Using a password on the command line interface can be insecure.asawari
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 20
 Server version: 8.0.26 MySQL Community Server - GPL
